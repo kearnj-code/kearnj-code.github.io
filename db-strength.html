@@ -43,7 +43,9 @@ body { background: #1c1408; min-height: 100vh; display: flex; justify-content: c
 .badge.carry { border-color: var(--pencil); color: var(--pencil); }
 .sline { flex: 1; height: 1px; background: var(--line); }
 .snote { font-family: 'Special Elite', serif; font-size: .52rem; letter-spacing: 1px; color: var(--pencil); white-space: nowrap; }
-.ss { margin-bottom: 16px; border-left: 2px solid var(--line); padding-left: 10px; position: relative; }
+.ss { margin-bottom: 16px; border-left: 3px solid var(--red); padding-left: 10px; position: relative; }
+.ss.solo { border-left: 3px solid var(--line); }
+.sslabel { font-family: 'Special Elite', serif; font-size: .58rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); background: rgba(176,42,30,.08); border: 1px solid rgba(176,42,30,.3); padding: 1px 5px; margin-left: 4px; flex-shrink: 0; }
 .sstag { position: absolute; left: -22px; top: 4px; font-family: 'Special Elite', serif; font-size: .45rem; letter-spacing: 1px; color: var(--pencil); text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); }
 .ex { margin-bottom: 12px; }
 .exrow { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
@@ -152,11 +154,11 @@ function render(){
     sh.innerHTML=`<span class="badge ${sec.badge}">${sec.label}</span><div class="sline"></div><span class="snote">${sec.note}</span>`;
     wb.appendChild(sh);
     sec.supersets.forEach(ss=>{
-      const sb=document.createElement('div');sb.className='ss';
+      const sb=document.createElement('div');sb.className='ss'+(ss.exercises.length===1?' solo':'');
       const tg=document.createElement('div');tg.className='sstag';tg.textContent=ss.exercises.length>1?'superset':'';sb.appendChild(tg);
       ss.exercises.forEach(ex=>{
         const ed=document.createElement('div');ed.className='ex';
-        ed.innerHTML=`<div class="exrow"><div class="exnum">${ex.num}</div><div class="exname">${ex.name}</div></div><div class="excue">${ex.cue}</div>`;
+        const ssIdx=ss.exercises.indexOf(ex);const ssLbl=ss.exercises.length>1?ss.tag+(ssIdx+1):'';ed.innerHTML=`<div class="exrow"><div class="exnum">${ex.num}</div><div class="exname">${ex.name}</div>${ssLbl?'<span class="sslabel">'+ssLbl+'</span>':''}</div><div class="excue">${ex.cue}</div>`;
         const tbl=document.createElement('table');
         tbl.innerHTML='<thead><tr><th>Set</th><th>Target</th><th>Wt</th><th>Reps</th><th>✓</th></tr></thead>';
         const tb=document.createElement('tbody');
