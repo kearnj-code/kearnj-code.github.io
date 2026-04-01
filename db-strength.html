@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>DB + KB Strength</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Permanent+Marker&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #111009; --red: #b02a1e; --blue: #1b3566; --pencil: #6b5c44;
+  --paper: #f6f1e7; --paper2: #ede6d4;
+  --line: rgba(160,135,100,.35); --grid: rgba(160,135,100,.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background: #1c1408; min-height: 100vh; display: flex; justify-content: center; padding: 16px 8px 64px; font-family: 'Courier Prime', monospace; }
+.book { width: 100%; max-width: 520px; background-color: var(--paper); background-image: linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px); background-size: 8px 8px,8px 8px,40px 40px,40px 40px; box-shadow: 4px 4px 28px rgba(0,0,0,.65),-2px 0 0 #c9a96e; position: relative; }
+.book::before { content:''; position:absolute; left:46px; top:0; bottom:0; width:1.5px; background:rgba(176,42,30,.28); z-index:2; pointer-events:none; }
+.inner { padding: 20px 16px 40px 58px; position: relative; z-index: 3; }
+.mast { border-bottom: 2.5px solid var(--ink); padding-bottom: 10px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: flex-end; }
+.title { font-family: 'Permanent Marker', cursive; font-size: 2rem; color: var(--ink); line-height: 1; letter-spacing: -1px; }
+.sub { font-family: 'Special Elite', serif; font-size: .56rem; letter-spacing: 3px; text-transform: uppercase; color: var(--pencil); margin-top: 3px; }
+.meta { text-align: right; }
+.mlbl { font-family: 'Special Elite', serif; font-size: .52rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); display: block; }
+.mval { font-family: 'Special Elite', serif; font-size: .8rem; color: var(--blue); }
+.navrow { display: flex; gap: 5px; margin: 12px 0 4px; flex-wrap: wrap; }
+.nb { font-family: 'Special Elite', serif; font-size: .58rem; letter-spacing: 1px; text-transform: uppercase; padding: 5px 10px; background: none; border: 1.5px solid var(--pencil); color: var(--pencil); cursor: pointer; flex-shrink: 0; touch-action: manipulation; }
+.nb.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tbar { background: var(--ink); margin: 12px -16px 0 -58px; padding: 10px 16px 10px 58px; display: flex; align-items: center; justify-content: space-between; }
+.ttime { font-family: 'Permanent Marker', cursive; font-size: 1.5rem; color: var(--paper); letter-spacing: 3px; min-width: 68px; }
+.ttime.run { color: #f0c040; } .ttime.go { color: #5db870; }
+.tlbl { font-family: 'Special Elite', serif; font-size: .5rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(246,241,231,.5); display: block; }
+.tbtns { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.tb { font-family: 'Special Elite', serif; font-size: .52rem; letter-spacing: 1px; text-transform: uppercase; padding: 5px 9px; background: none; border: 1px solid rgba(246,241,231,.3); color: var(--paper); cursor: pointer; touch-action: manipulation; }
+.tb.stp { border-color: var(--red); color: #e07060; }
+.sh { display: flex; align-items: center; gap: 7px; margin: 16px 0 9px; }
+.badge { font-family: 'Special Elite', serif; font-size: .56rem; letter-spacing: 2px; text-transform: uppercase; padding: 3px 8px; border: 1.5px solid var(--ink); color: var(--ink); white-space: nowrap; }
+.badge.push { border-color: var(--red); color: var(--red); }
+.badge.pull { border-color: var(--blue); color: var(--blue); }
+.badge.lower { border-color: #2e2416; color: #2e2416; }
+.badge.carry { border-color: var(--pencil); color: var(--pencil); }
+.sline { flex: 1; height: 1px; background: var(--line); }
+.snote { font-family: 'Special Elite', serif; font-size: .52rem; letter-spacing: 1px; color: var(--pencil); white-space: nowrap; }
+.ss { margin-bottom: 16px; border-left: 2px solid var(--line); padding-left: 10px; position: relative; }
+.sstag { position: absolute; left: -22px; top: 4px; font-family: 'Special Elite', serif; font-size: .45rem; letter-spacing: 1px; color: var(--pencil); text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); }
+.ex { margin-bottom: 12px; }
+.exrow { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.exnum { font-family: 'Special Elite', serif; font-size: .56rem; color: var(--red); border: 1px solid var(--red); width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.exname { font-family: 'Permanent Marker', cursive; font-size: .92rem; color: var(--ink); line-height: 1.1; }
+.excue { font-family: 'Special Elite', serif; font-size: .55rem; color: var(--pencil); font-style: italic; margin-left: 23px; margin-bottom: 5px; }
+table { border-collapse: collapse; margin-left: 23px; width: calc(100% - 23px); }
+th { font-family: 'Special Elite', serif; font-size: .5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); padding: 2px 4px; text-align: center; border-bottom: 1px solid var(--line); font-weight: normal; }
+th:first-child { text-align: left; }
+td { padding: 4px; border-bottom: 1px dashed var(--grid); text-align: center; vertical-align: middle; }
+td:first-child { text-align: left; }
+.sl { font-family: 'Special Elite', serif; font-size: .62rem; color: var(--pencil); }
+input.si { font-family: 'Permanent Marker', cursive; font-size: .88rem; color: var(--blue); background: transparent; border: none; outline: none; width: 100%; text-align: center; -webkit-appearance: none; }
+input.si::placeholder { font-family: 'Special Elite', serif; font-size: .55rem; color: rgba(160,135,100,.4); }
+.ckc { cursor: pointer; touch-action: manipulation; }
+.box { display: inline-block; width: 18px; height: 18px; border: 1.5px solid var(--pencil); vertical-align: middle; position: relative; }
+.box.done { background: var(--ink); border-color: var(--ink); }
+.box.done::after { content: '✓'; font-family: 'Permanent Marker', cursive; font-size: .7rem; color: var(--paper); position: absolute; top: -1px; left: 2px; }
+.notewrap { margin-top: 18px; }
+textarea { width: 100%; background: transparent; border: none; border-bottom: 1.5px solid var(--pencil); outline: none; resize: none; font-family: 'Special Elite', serif; font-size: .82rem; color: var(--ink); line-height: 1.7; padding: 4px 0; min-height: 52px; }
+textarea::placeholder { color: rgba(160,135,100,.5); }
+.stampwrap { margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+.stamp { border: 2.5px solid var(--red); padding: 8px 12px; transform: rotate(-1.8deg); flex-shrink: 0; }
+.stamph { font-family: 'Special Elite', serif; font-size: .5rem; letter-spacing: 3px; text-transform: uppercase; color: var(--red); text-align: center; margin-bottom: 5px; }
+.stamprow { display: flex; gap: 12px; }
+.si2 { text-align: center; }
+.sv { font-family: 'Permanent Marker', cursive; font-size: 1.25rem; color: var(--red); line-height: 1; display: block; }
+.sl2 { font-family: 'Special Elite', serif; font-size: .45rem; letter-spacing: 2px; text-transform: uppercase; color: var(--red); opacity: .65; }
+.prog { flex: 1; }
+.plbl { font-family: 'Special Elite', serif; font-size: .5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); margin-bottom: 5px; }
+.pips { display: flex; gap: 5px; }
+.pip { width: 18px; height: 18px; border: 1.5px solid var(--pencil); font-family: 'Special Elite', serif; font-size: .5rem; color: var(--pencil); display: flex; align-items: center; justify-content: center; }
+.pip.logged { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.pip.cur { border-color: var(--red); color: var(--red); }
+.fin { margin-top: 20px; width: 100%; padding: 14px; font-family: 'Permanent Marker', cursive; font-size: 1.05rem; letter-spacing: 2px; background: var(--ink); color: var(--paper); border: none; cursor: pointer; text-transform: uppercase; touch-action: manipulation; }
+.fin:active { background: var(--red); }
+.banner { display: none; font-family: 'Permanent Marker', cursive; font-size: 1.7rem; color: var(--red); border: 3px solid var(--red); text-align: center; padding: 8px; transform: rotate(-1.5deg); opacity: .85; margin: 14px 0; }
+</style>
+</head>
+<body>
+<div class="book"><div class="inner">
+  <div class="mast">
+    <div><div class="title">DB + KB</div><div class="sub">Strength Log &mdash; 4 Weeks</div></div>
+    <div class="meta">
+      <span class="mlbl">Date</span><span class="mval" id="dt"></span>
+      <span class="mlbl" style="margin-top:3px">Week</span><span class="mval" id="wk">—</span>
+    </div>
+  </div>
+  <div class="navrow" id="wnav"></div>
+  <div class="navrow" id="dnav"></div>
+  <div class="tbar">
+    <div><span class="tlbl">Rest Timer</span><div class="ttime" id="td">0:00</div></div>
+    <div class="tbtns">
+      <button class="tb" onclick="startT(60)">1:00</button>
+      <button class="tb" onclick="startT(90)">1:30</button>
+      <button class="tb" onclick="startT(120)">2:00</button>
+      <button class="tb" onclick="startT(180)">3:00</button>
+      <button class="tb stp" id="ts" onclick="stopT()" style="display:none">STOP</button>
+    </div>
+  </div>
+  <div id="wb"></div>
+  <div class="banner" id="ban">WORK DONE ✓</div>
+  <div class="notewrap">
+    <div class="sh"><span class="badge">Notes</span><div class="sline"></div></div>
+    <textarea id="nb" placeholder="how'd it feel... PRs... adjustments..." rows="3"></textarea>
+  </div>
+  <div class="stampwrap">
+    <div class="stamp">
+      <div class="stamph">Session</div>
+      <div class="stamprow">
+        <div class="si2"><span class="sv" id="tsets">0</span><span class="sl2">Sets</span></div>
+        <div class="si2"><span class="sv" id="treps">0</span><span class="sl2">Reps</span></div>
+        <div class="si2"><span class="sv" id="tvol">0</span><span class="sl2">lbs</span></div>
+      </div>
+    </div>
+    <div class="prog"><div class="plbl">Week Progress</div><div class="pips" id="pp"></div></div>
+  </div>
+  <button class="fin" onclick="logSess()">Log It &amp; Finish</button>
+</div></div>
+
+<script>
+const P={1:{sections:[{badge:"push",label:"Upper Push",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Floor Press",cue:"DB · control descent, press hard",sets:4,reps:"10-12",num:1},{name:"DB Lateral Raise",cue:"DB · slight bend, lead with elbow",sets:4,reps:"12-15",num:2}]},{tag:"B",exercises:[{name:"KB Clean & Press",cue:"KB · clean to rack, press hard, lockout",sets:3,reps:"6 ea",num:3},{name:"DB Tricep Kickback",cue:"DB · upper arm parallel, lock it out",sets:3,reps:"12",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"KB Goblet Squat",cue:"KB · horns up, chest tall, knees out",sets:4,reps:"10-12",num:5},{name:"KB Romanian DL",cue:"KB · hinge hard, bell stays close",sets:4,reps:"10",num:6}]},{tag:"D",exercises:[{name:"DB Reverse Lunge",cue:"DB · trail knee floats, don't crash",sets:3,reps:"10 ea",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Farmer Carry",cue:"KB · tall spine, packed shoulder, grip hard",sets:3,reps:"40 yds",num:8}]}]}]},2:{sections:[{badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Bent-Over Row",cue:"DB · row to hip, not armpit",sets:4,reps:"10-12",num:1},{name:"DB Hammer Curl",cue:"DB · neutral grip, no swing",sets:4,reps:"10-12",num:2}]},{tag:"B",exercises:[{name:"KB Single-Arm Clean",cue:"KB · hike, hip snap, catch in rack",sets:3,reps:"6 ea",num:3},{name:"DB Face Pull (prone)",cue:"DB · external rotation, slow it down",sets:3,reps:"12-15",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"DB Split Squat",cue:"DB · hip forward, vertical shin",sets:4,reps:"8-10 ea",num:5},{name:"KB Swing",cue:"KB · hinge not squat, snap the hips",sets:4,reps:"15",num:6}]},{tag:"D",exercises:[{name:"KB Good Morning",cue:"KB · bell on back of neck, hinge from hip",sets:3,reps:"12",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Suitcase Carry",cue:"KB · resist the lean, brace hard",sets:3,reps:"30 yds ea",num:8}]}]}]},3:{sections:[{badge:"push",label:"Upper Push",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Incline Press",cue:"DB · 30-45° bench, control the arc",sets:4,reps:"8-10",num:1},{name:"DB Lateral Raise",cue:"DB · slight bend, lead with elbow",sets:4,reps:"12-15",num:2}]},{tag:"B",exercises:[{name:"KB Push Press",cue:"KB · dip + drive, lockout hard overhead",sets:3,reps:"6 ea",num:3},{name:"DB Skull Crusher",cue:"DB · elbows in, lower to forehead",sets:3,reps:"10-12",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"KB Sumo DL",cue:"KB · wide stance, bell between feet, drive the floor",sets:4,reps:"10",num:5},{name:"DB Stiff-Leg DL",cue:"DB · minimal knee bend, feel the stretch",sets:4,reps:"10",num:6}]},{tag:"D",exercises:[{name:"DB Step-Up",cue:"DB · drive through heel, no push off back foot",sets:3,reps:"10 ea",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Overhead Carry",cue:"KB · packed shoulder, ribs down, don't side-bend",sets:3,reps:"20 yds ea",num:8}]}]}]},4:{sections:[{badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Single-Arm Row",cue:"DB · rotate at the top, full stretch",sets:4,reps:"10 ea",num:1},{name:"DB Zottman Curl",cue:"DB · supinate up, pronate down, slow",sets:4,reps:"10",num:2}]},{tag:"B",exercises:[{name:"KB Renegade Row",cue:"KB · plank tight, row to hip, no rotation",sets:3,reps:"6 ea",num:3},{name:"DB Shrug",cue:"DB · straight up, hold 1 sec at top",sets:3,reps:"15",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"KB Single-Leg DL",cue:"KB · hinge, trail leg floats, bell vertical",sets:4,reps:"8 ea",num:5},{name:"KB Swing",cue:"KB · power from the hip, float at top",sets:4,reps:"15",num:6}]},{tag:"D",exercises:[{name:"DB Hip Thrust",cue:"DB · shoulder blade pivot, full extension",sets:3,reps:"12-15",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Waiter's Walk",cue:"KB · one overhead, one at side, switch halfway",sets:3,reps:"20 yds ea",num:8}]}]}]}};
+
+let cW=1,cD=1;const LD={};
+const sk=(w,d)=>`w${w}d${d}`;
+const gs=(w,d)=>{const k=sk(w,d);if(!LD[k])LD[k]={inp:{},chk:{},notes:'',logged:false};return LD[k]};
+
+function init(){
+  document.getElementById('dt').textContent=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  bW();bD();render();
+}
+function bW(){
+  const c=document.getElementById('wnav');c.innerHTML='';
+  for(let w=1;w<=4;w++){const b=document.createElement('button');b.className='nb'+(w===cW?' on':'');b.textContent=`Week ${w}`;b.onclick=()=>{sv();cW=w;bW();bD();render()};c.appendChild(b)}
+  document.getElementById('wk').textContent=cW;
+}
+function bD(){
+  const c=document.getElementById('dnav');c.innerHTML='';
+  for(let d=1;d<=4;d++){const b=document.createElement('button');b.className='nb'+(d===cD?' on':'');b.textContent=d%2===1?`Day ${d} · Push`:`Day ${d} · Pull`;b.onclick=()=>{sv();cD=d;bD();render()};c.appendChild(b)}
+}
+function render(){
+  const wb=document.getElementById('wb');wb.innerHTML='';
+  const day=P[cD],st=gs(cW,cD);
+  day.sections.forEach(sec=>{
+    const sh=document.createElement('div');sh.className='sh';
+    sh.innerHTML=`<span class="badge ${sec.badge}">${sec.label}</span><div class="sline"></div><span class="snote">${sec.note}</span>`;
+    wb.appendChild(sh);
+    sec.supersets.forEach(ss=>{
+      const sb=document.createElement('div');sb.className='ss';
+      const tg=document.createElement('div');tg.className='sstag';tg.textContent=ss.exercises.length>1?'superset':'';sb.appendChild(tg);
+      ss.exercises.forEach(ex=>{
+        const ed=document.createElement('div');ed.className='ex';
+        ed.innerHTML=`<div class="exrow"><div class="exnum">${ex.num}</div><div class="exname">${ex.name}</div></div><div class="excue">${ex.cue}</div>`;
+        const tbl=document.createElement('table');
+        tbl.innerHTML='<thead><tr><th>Set</th><th>Target</th><th>Wt</th><th>Reps</th><th>✓</th></tr></thead>';
+        const tb=document.createElement('tbody');
+        for(let s=1;s<=ex.sets;s++){
+          const bk=`ex${ex.num}_s${s}`,wk=bk+'_w',rk=bk+'_r',ck=bk+'_c';
+          const tr=document.createElement('tr');
+          tr.innerHTML=`<td><span class="sl">S${s}</span></td><td><span class="sl">${ex.reps}</span></td><td><input class="si" type="number" inputmode="decimal" placeholder="lbs" data-k="${wk}" value="${st.inp[wk]||''}"></td><td><input class="si" type="number" inputmode="decimal" placeholder="reps" data-k="${rk}" value="${st.inp[rk]||''}"></td><td class="ckc"><div class="box${st.chk[ck]?' done':''}" data-k="${ck}"></div></td>`;
+          tb.appendChild(tr);
+        }
+        tbl.appendChild(tb);ed.appendChild(tbl);sb.appendChild(ed);
+      });
+      wb.appendChild(sb);
+    });
+  });
+  wb.querySelectorAll('input.si').forEach(i=>i.addEventListener('input',()=>{gs(cW,cD).inp[i.dataset.k]=i.value;tots()}));
+  wb.querySelectorAll('.box').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k,s=gs(cW,cD);s.chk[k]=!s.chk[k];b.classList.toggle('done',s.chk[k]);tots();startT(90)}));
+  const nb=document.getElementById('nb');nb.value=gs(cW,cD).notes||'';nb.oninput=()=>{gs(cW,cD).notes=nb.value};
+  document.getElementById('ban').style.display=gs(cW,cD).logged?'block':'none';
+  tots();pips();
+}
+function sv(){const nb=document.getElementById('nb');if(nb)gs(cW,cD).notes=nb.value}
+function tots(){
+  const s=gs(cW,cD);let sets=0,reps=0,vol=0;
+  Object.keys(s.chk).forEach(k=>{if(s.chk[k]){sets++;const b=k.replace('_c','');const r=parseInt(s.inp[b+'_r'])||0,w=parseInt(s.inp[b+'_w'])||0;reps+=r;vol+=r*w}});
+  document.getElementById('tsets').textContent=sets;
+  document.getElementById('treps').textContent=reps;
+  document.getElementById('tvol').textContent=vol>=1000?(vol/1000).toFixed(1)+'k':vol;
+}
+function pips(){
+  const c=document.getElementById('pp');c.innerHTML='';
+  for(let d=1;d<=4;d++){const p=document.createElement('div'),s=gs(cW,d);p.className='pip'+(s.logged?' logged':'')+(d===cD&&!s.logged?' cur':'');p.textContent=d===cD&&!s.logged?'▸':s.logged?'✓':d;c.appendChild(p)}
+}
+function logSess(){
+  sv();gs(cW,cD).logged=true;document.getElementById('ban').style.display='block';pips();
+  if(cD<4)setTimeout(()=>{sv();cD++;bD();render()},1400);
+}
+let ti=null,ts=0;
+function startT(s){
+  stopT();ts=s;const d=document.getElementById('td'),st=document.getElementById('ts');
+  st.style.display='inline-block';d.className='ttime run';
+  ti=setInterval(()=>{ts--;if(ts<=0){clearInterval(ti);ti=null;d.textContent='GO';d.className='ttime go';st.style.display='none';setTimeout(()=>{d.textContent='0:00';d.className='ttime'},2200);return}d.textContent=`${Math.floor(ts/60)}:${(ts%60).toString().padStart(2,'0')}`},1000);
+  d.textContent=`${Math.floor(ts/60)}:${(ts%60).toString().padStart(2,'0')}`;
+}
+function stopT(){if(ti){clearInterval(ti);ti=null}document.getElementById('td').textContent='0:00';document.getElementById('td').className='ttime';document.getElementById('ts').style.display='none';ts=0}
+init();
+</script>
+</body>
+</html>
