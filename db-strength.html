@@ -128,7 +128,111 @@ textarea::placeholder { color: rgba(160,135,100,.5); }
 </div></div>
 
 <script>
-const P={1:{sections:[{badge:"push",label:"Upper Push",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Floor Press",cue:"DB · control descent, press hard",sets:4,reps:"10-12",num:1},{name:"DB Lateral Raise",cue:"DB · slight bend, lead with elbow",sets:4,reps:"12-15",num:2}]},{tag:"B",exercises:[{name:"KB Clean & Press",cue:"KB · clean to rack, press hard, lockout",sets:3,reps:"6 ea",num:3},{name:"DB Tricep Kickback",cue:"DB · upper arm parallel, lock it out",sets:3,reps:"12",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"KB Goblet Squat",cue:"KB · horns up, chest tall, knees out",sets:4,reps:"10-12",num:5},{name:"KB Romanian DL",cue:"KB · hinge hard, bell stays close",sets:4,reps:"10",num:6}]},{tag:"D",exercises:[{name:"DB Reverse Lunge",cue:"DB · trail knee floats, don't crash",sets:3,reps:"10 ea",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Farmer Carry",cue:"KB · tall spine, packed shoulder, grip hard",sets:3,reps:"40 sec",num:8}]}]}]},2:{sections:[{badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Bent-Over Row",cue:"DB · row to hip, not armpit",sets:4,reps:"10-12",num:1},{name:"DB Hammer Curl",cue:"DB · neutral grip, no swing",sets:4,reps:"10-12",num:2}]},{tag:"B",exercises:[{name:"KB Single-Arm Clean",cue:"KB · hike, hip snap, catch in rack",sets:3,reps:"6 ea",num:3},{name:"DB Face Pull (prone)",cue:"DB · external rotation, slow it down",sets:3,reps:"12-15",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"DB Split Squat",cue:"DB · hip forward, vertical shin",sets:4,reps:"8-10 ea",num:5},{name:"KB Swing",cue:"KB · hinge not squat, snap the hips",sets:4,reps:"15",num:6}]},{tag:"D",exercises:[{name:"KB Good Morning",cue:"KB · bell on back of neck, hinge from hip",sets:3,reps:"12",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Suitcase Carry",cue:"KB · resist the lean, brace hard",sets:3,reps:"40 sec ea",num:8}]}]}]},3:{sections:[{badge:"push",label:"Upper Push",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Incline Press",cue:"DB · 30-45° bench, control the arc",sets:4,reps:"8-10",num:1},{name:"DB Lateral Raise",cue:"DB · slight bend, lead with elbow",sets:4,reps:"12-15",num:2}]},{tag:"B",exercises:[{name:"KB Push Press",cue:"KB · dip + drive, lockout hard overhead",sets:3,reps:"6 ea",num:3},{name:"DB Skull Crusher",cue:"DB · elbows in, lower to forehead",sets:3,reps:"10-12",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"KB Sumo DL",cue:"KB · wide stance, bell between feet, drive the floor",sets:4,reps:"10",num:5},{name:"DB Stiff-Leg DL",cue:"DB · minimal knee bend, feel the stretch",sets:4,reps:"10",num:6}]},{tag:"D",exercises:[{name:"DB Step-Up",cue:"DB · drive through heel, no push off back foot",sets:3,reps:"10 ea",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Overhead Carry",cue:"KB · packed shoulder, ribs down, don't side-bend",sets:3,reps:"40 sec ea",num:8}]}]}]},4:{sections:[{badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[{tag:"A",exercises:[{name:"DB Single-Arm Row",cue:"DB · rotate at the top, full stretch",sets:4,reps:"10 ea",num:1},{name:"DB Zottman Curl",cue:"DB · supinate up, pronate down, slow",sets:4,reps:"10",num:2}]},{tag:"B",exercises:[{name:"KB Renegade Row",cue:"KB · plank tight, row to hip, no rotation",sets:3,reps:"6 ea",num:3},{name:"DB Shrug",cue:"DB · straight up, hold 1 sec at top",sets:3,reps:"15",num:4}]}]},{badge:"lower",label:"Lower Body",note:"C/D = superset",supersets:[{tag:"C",exercises:[{name:"KB Single-Leg DL",cue:"KB · hinge, trail leg floats, bell vertical",sets:4,reps:"8 ea",num:5},{name:"KB Swing",cue:"KB · power from the hip, float at top",sets:4,reps:"15",num:6}]},{tag:"D",exercises:[{name:"DB Hip Thrust",cue:"DB · shoulder blade pivot, full extension",sets:3,reps:"12-15",num:7}]}]},{badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[{tag:"E",exercises:[{name:"KB Waiter's Walk",cue:"KB · one overhead, one at side, switch halfway",sets:3,reps:"40 sec ea",num:8}]}]}]}};
+const P={
+1:{sections:[
+  {badge:"push",label:"Upper Push",note:"A1/A2 = superset",supersets:[
+    {tag:"A",exercises:[
+      {name:"KB Turkish Get-Up",cue:"KB · slow and deliberate — own every position",sets:2,reps:"3 ea",num:1},
+      {name:"DB Floor Press",cue:"DB · control descent, press hard",sets:2,reps:"10-12",num:2}
+    ]},
+    {tag:"B",exercises:[
+      {name:"KB Clean & Press",cue:"KB · clean to rack, press hard, lockout",sets:2,reps:"6 ea",num:3},
+      {name:"DB Lateral Raise",cue:"DB · slight bend, lead with elbow",sets:2,reps:"12-15",num:4}
+    ]}
+  ]},
+  {badge:"lower",label:"Lower Body",note:"C1/C2 = superset",supersets:[
+    {tag:"C",exercises:[
+      {name:"KB Goblet Squat",cue:"KB · horns up, chest tall, knees out",sets:2,reps:"10-12",num:5},
+      {name:"KB Romanian DL",cue:"KB · hinge hard, bell stays close",sets:2,reps:"10",num:6}
+    ]},
+    {tag:"D",exercises:[
+      {name:"DB Reverse Lunge",cue:"DB · trail knee floats, don't crash",sets:2,reps:"10 ea",num:7}
+    ]}
+  ]},
+  {badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[
+    {tag:"E",exercises:[
+      {name:"KB Farmer Carry",cue:"KB · tall spine, packed shoulder, grip hard",sets:2,reps:"40 sec",num:8}
+    ]}
+  ]}
+]},
+2:{sections:[
+  {badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[
+    {tag:"A",exercises:[
+      {name:"KB Turkish Get-Up",cue:"KB · slow and deliberate — own every position",sets:2,reps:"3 ea",num:1},
+      {name:"DB Bent-Over Row",cue:"DB · row to hip, not armpit",sets:2,reps:"10-12",num:2}
+    ]},
+    {tag:"B",exercises:[
+      {name:"KB Single-Arm Clean",cue:"KB · hike, hip snap, catch in rack",sets:2,reps:"6 ea",num:3},
+      {name:"DB Hammer Curl",cue:"DB · neutral grip, no swing",sets:2,reps:"10-12",num:4}
+    ]}
+  ]},
+  {badge:"lower",label:"Lower Body",note:"C1/C2 = superset",supersets:[
+    {tag:"C",exercises:[
+      {name:"DB Split Squat",cue:"DB · hip forward, vertical shin — all reps one side then switch",sets:2,reps:"8-10 ea side",num:5},
+      {name:"KB Swing",cue:"KB · hinge not squat, snap the hips",sets:2,reps:"15",num:6}
+    ]},
+    {tag:"D",exercises:[
+      {name:"KB Good Morning",cue:"KB · bell on back of neck, hinge from hip",sets:2,reps:"12",num:7}
+    ]}
+  ]},
+  {badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[
+    {tag:"E",exercises:[
+      {name:"KB Suitcase Carry",cue:"KB · resist the lean, brace hard",sets:2,reps:"40 sec ea",num:8}
+    ]}
+  ]}
+]},
+3:{sections:[
+  {badge:"push",label:"Upper Push",note:"A1/A2 = superset",supersets:[
+    {tag:"A",exercises:[
+      {name:"KB Turkish Get-Up",cue:"KB · slow and deliberate — own every position",sets:2,reps:"3 ea",num:1},
+      {name:"DB Incline Press",cue:"DB · 30-45° bench, control the arc",sets:2,reps:"8-10",num:2}
+    ]},
+    {tag:"B",exercises:[
+      {name:"KB Push Press",cue:"KB · dip + drive, lockout hard overhead",sets:2,reps:"6 ea",num:3},
+      {name:"DB Tricep Kickback",cue:"DB · upper arm parallel, lock it out",sets:2,reps:"12",num:4}
+    ]}
+  ]},
+  {badge:"lower",label:"Lower Body",note:"C1/C2 = superset",supersets:[
+    {tag:"C",exercises:[
+      {name:"KB Sumo DL",cue:"KB · wide stance, bell between feet, drive the floor",sets:2,reps:"10",num:5},
+      {name:"DB Stiff-Leg DL",cue:"DB · minimal knee bend, feel the stretch",sets:2,reps:"10",num:6}
+    ]},
+    {tag:"D",exercises:[
+      {name:"DB Step-Up",cue:"DB · drive through heel, no push off back foot",sets:2,reps:"10 ea",num:7}
+    ]}
+  ]},
+  {badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[
+    {tag:"E",exercises:[
+      {name:"KB Overhead Carry",cue:"KB · packed shoulder, ribs down, don't side-bend",sets:2,reps:"40 sec ea",num:8}
+    ]}
+  ]}
+]},
+4:{sections:[
+  {badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[
+    {tag:"A",exercises:[
+      {name:"KB Turkish Get-Up",cue:"KB · slow and deliberate — own every position",sets:2,reps:"3 ea",num:1},
+      {name:"DB Single-Arm Row",cue:"DB · rotate at the top, full stretch",sets:2,reps:"10 ea",num:2}
+    ]},
+    {tag:"B",exercises:[
+      {name:"KB Renegade Row",cue:"KB · plank tight, row to hip, no rotation",sets:2,reps:"6 ea",num:3},
+      {name:"DB Zottman Curl",cue:"DB · supinate up, pronate down, slow",sets:2,reps:"10",num:4}
+    ]}
+  ]},
+  {badge:"lower",label:"Lower Body",note:"C1/C2 = superset",supersets:[
+    {tag:"C",exercises:[
+      {name:"KB Single-Leg DL",cue:"KB · hinge, trail leg floats, bell vertical",sets:2,reps:"8 ea",num:5},
+      {name:"KB Swing",cue:"KB · power from the hip, float at top",sets:2,reps:"15",num:6}
+    ]},
+    {tag:"D",exercises:[
+      {name:"DB Hip Thrust",cue:"DB · shoulder blade pivot, full extension",sets:2,reps:"12-15",num:7}
+    ]}
+  ]},
+  {badge:"carry",label:"Loaded Carry",note:"finisher",supersets:[
+    {tag:"E",exercises:[
+      {name:"KB Waiter's Walk",cue:"KB · one overhead, one at side, switch halfway",sets:2,reps:"40 sec ea",num:8}
+    ]}
+  ]}
+]}};
 
 let cW=1,cD=1;const LD={};
 const STORE_KEY="dbkb_log_v1";
