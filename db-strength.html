@@ -82,6 +82,10 @@ textarea::placeholder { color: rgba(160,135,100,.5); }
 .pip.cur { border-color: var(--red); color: var(--red); }
 .fin { margin-top: 20px; width: 100%; padding: 14px; font-family: 'Permanent Marker', cursive; font-size: 1.05rem; letter-spacing: 2px; background: var(--ink); color: var(--paper); border: none; cursor: pointer; text-transform: uppercase; touch-action: manipulation; }
 .fin:active { background: var(--red); }
+.reset-row { display: flex; gap: 8px; margin-top: 10px; }
+.rbtn { font-family: 'Special Elite', serif; font-size: .55rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 12px; background: none; border: 1.5px solid var(--pencil); color: var(--pencil); cursor: pointer; flex: 1; touch-action: manipulation; }
+.rbtn:active { background: var(--paper2); }
+.rbtn.danger { border-color: var(--red); color: var(--red); }
 .banner { display: none; font-family: 'Permanent Marker', cursive; font-size: 1.7rem; color: var(--red); border: 3px solid var(--red); text-align: center; padding: 8px; transform: rotate(-1.5deg); opacity: .85; margin: 14px 0; }
 </style>
 </head>
@@ -125,6 +129,7 @@ textarea::placeholder { color: rgba(160,135,100,.5); }
     <div class="prog"><div class="plbl">Week Progress</div><div class="pips" id="pp"></div></div>
   </div>
   <button class="fin" onclick="logSess()">Log It &amp; Finish</button>
+  <div class="reset-row"><button class="rbtn" onclick="resetDay()">Clear Today</button><button class="rbtn danger" onclick="resetAll()">Clear All</button></div>
 </div></div>
 
 <script>
@@ -158,8 +163,8 @@ const P={
 2:{sections:[
   {badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[
     {tag:"A",exercises:[
-      {name:"KB Turkish Get-Up",cue:"KB · slow and deliberate — own every position",sets:2,reps:"3 ea",num:1},
-      {name:"DB Bent-Over Row",cue:"DB · row to hip, not armpit",sets:2,reps:"10-12",num:2}
+      {name:"KB Halo",cue:"KB · circle bell around head, slow — ribs down, no flare",sets:2,reps:"8 ea dir",num:1},
+      {name:"Pull-ups",cue:"BW · dead hang start, drive elbows down, chin over bar",sets:2,reps:"max",num:2}
     ]},
     {tag:"B",exercises:[
       {name:"KB Single-Arm Clean",cue:"KB · hike, hip snap, catch in rack",sets:2,reps:"6 ea",num:3},
@@ -210,11 +215,11 @@ const P={
 4:{sections:[
   {badge:"pull",label:"Upper Pull",note:"A1/A2 = superset",supersets:[
     {tag:"A",exercises:[
-      {name:"KB Turkish Get-Up",cue:"KB · slow and deliberate — own every position",sets:2,reps:"3 ea",num:1},
+      {name:"Dead Bug",cue:"BW · lower back glued down, opposite arm/leg, exhale hard",sets:2,reps:"8 ea side",num:1},
       {name:"DB Single-Arm Row",cue:"DB · rotate at the top, full stretch",sets:2,reps:"10 ea",num:2}
     ]},
     {tag:"B",exercises:[
-      {name:"KB Renegade Row",cue:"KB · plank tight, row to hip, no rotation",sets:2,reps:"6 ea",num:3},
+      {name:"Pull-ups",cue:"BW · full ROM, controlled descent — no kipping",sets:2,reps:"max",num:3},
       {name:"DB Zottman Curl",cue:"DB · supinate up, pronate down, slow",sets:2,reps:"10",num:4}
     ]}
   ]},
@@ -311,6 +316,8 @@ function startT(s){
   d.textContent=`${Math.floor(ts/60)}:${(ts%60).toString().padStart(2,'0')}`;
 }
 function stopT(){if(ti){clearInterval(ti);ti=null}document.getElementById('td').textContent='0:00';document.getElementById('td').className='ttime';document.getElementById('ts').style.display='none';ts=0}
+function resetDay(){if(!confirm('Clear today entries?'))return;const k=sk(cW,cD);delete LD[k];saveLS();render();}
+function resetAll(){if(!confirm('Clear ALL data?'))return;Object.keys(LD).forEach(k=>delete LD[k]);saveLS();cW=1;cD=1;bW();bD();render();}
 init();
 </script>
 </body>
